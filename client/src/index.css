@@ -1,0 +1,140 @@
+/**
+ * PikNode — Global Styles
+ * =========================
+ * Tailwind base + custom CSS variables + global resets.
+ * Font loading: Outfit (display), DM Sans (body), JetBrains Mono (code)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   CSS CUSTOM PROPERTIES
+───────────────────────────────────────────── */
+
+:root {
+  --color-forest-500: #2d9e2d;
+  --color-forest-600: #1f7a1f;
+  --color-forest-900: #0c330c;
+  --color-leaf-400: #92d42a;
+  --color-leaf-500: #74b816;
+  --color-harvest-500: #f59e0b;
+  --color-earth-500: #e45a24;
+  
+  /* Switched from dark stone to light/warm stone for outdoor visibility */
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --sidebar-width: 16rem;
+  --header-height: 4rem;
+}
+
+/* ─────────────────────────────────────────────
+   BASE RESETS & GLOBAL STYLES
+───────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    /* CORRECTION: High-contrast light mode for outdoor sunlight visibility */
+    @apply bg-stone-50 text-stone-900;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+  }
+
+  /* Accessible focus ring */
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-[#74b816]; /* Uses leaf-500 */
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-stone-300 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-stone-400;
+  }
+
+  /* Hide number input spinners */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   COMPONENT UTILITIES
+───────────────────────────────────────────── */
+
+@layer components {
+  /* CORRECTION: Fixed to use standard Tailwind classes to prevent crashes */
+  .pk-card {
+    @apply bg-white rounded-xl border border-stone-200 shadow-sm transition-shadow hover:shadow-md;
+  }
+
+  /* Field-condition readable text (Large and clear) */
+  .pk-readable {
+    @apply text-lg leading-relaxed font-body text-stone-800;
+  }
+
+  /* Gradient text (PikNode brand) */
+  .pk-gradient-text {
+    background: linear-gradient(to right, var(--color-leaf-500), var(--color-forest-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   SAFE AREA SUPPORT (for mobile notch/home bar)
+───────────────────────────────────────────── */
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe-bottom {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ─────────────────────────────────────────────
+   FRAMER MOTION — Reduce motion accessibility
+───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
